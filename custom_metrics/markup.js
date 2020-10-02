@@ -89,10 +89,13 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
 
         result.total = nodes.length;
 
+        result.total_with_type = 0;
+
         nodes.forEach((n) => {
           let type = n.getAttribute("type");
 
-          if (type) {
+          if (type || type ==='') {
+              result.total_with_type++;
               if (result.types[type])
                 result.types[type]++;
               else 
@@ -118,11 +121,13 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
           var nodes = [...document.querySelectorAll(selector)];
 
           target.total = nodes.length;
+          target.total_with_dir = 0;
     
           nodes.forEach((n) => {
             let dir = n.getAttribute("dir");
     
-            if (dir) {
+            if (dir || dir ==='') {
+              target.total_with_dir++;
               if (target.values[dir])
                 target.values[dir]++;
               else 
@@ -159,10 +164,13 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
 
         result.total = nodes.length;
 
+        result.total_with_type = 0;
+
         nodes.forEach((n) => {
           let type = n.getAttribute("type");
 
-          if (type) {
+          if (type || type ==='') {
+              result.total_with_type++;
               if (result.types[type])
                 result.types[type]++;
               else 
@@ -185,16 +193,22 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
       try {
         let result = {autoplay: {}};
 
-        const nodes = document.querySelectorAll('audio');
+        const nodes = [...document.querySelectorAll('audio')];
+
+        result.total = nodes.length;
+        result.total_with_autoplay = 0;
 
         nodes.forEach((n) => {
           let autoplay = n.getAttribute("autoplay");
 
-          if (result.autoplay[autoplay])
-            result.autoplay[autoplay]++;
-          else 
-            result.autoplay[autoplay] = 1;
-          });
+          if (autoplay || autoplay ==='') {
+            result.total_with_autoplay++;
+            if (result.autoplay[autoplay])
+              result.autoplay[autoplay]++;
+            else 
+              result.autoplay[autoplay] = 1;
+          }
+        });
 
         result.total = nodes.length;
 
@@ -213,19 +227,18 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
 
         let names = {};
 
-        const nodes = document.querySelectorAll('*[class]');
+        const nodes = [...document.querySelectorAll('*[class]')];
 
         nodes.forEach((n) => {
           n.classList.forEach((name) => {
             result.references_total++;
-
             if (names[name]) {
               names[name]++;
             }
             else {
               names[name] =1;
               result.unique_names_total++;
-            }
+            }      
           });
         });
 
@@ -243,7 +256,7 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
         let ids = {};
         let result = {ids_total: 0, duplicate_ids_total: 0, unique_ids_total: 0};
 
-        const nodes = document.querySelectorAll('*[id]');
+        const nodes = [...document.querySelectorAll('*[id]')];
 
         nodes.forEach((n) => {
 
@@ -313,13 +326,13 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
           }
         };
 
-        var pictureNodes = document.querySelectorAll('picture');
+        var pictureNodes = [...document.querySelectorAll('picture')];
 
         pictureNodes.forEach(node => {
           result.picture.total++;
         });
 
-        var sourceNodes = document.querySelectorAll('source');
+        var sourceNodes = [...document.querySelectorAll('source')];
 
         sourceNodes.forEach(node => {
           result.source.total++;
@@ -337,7 +350,7 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
           }
         });
 
-        var imgNodes = document.querySelectorAll('img');
+        var imgNodes = [...document.querySelectorAll('img')];
 
         imgNodes.forEach(node => {
             result.img.total++;
@@ -400,7 +413,7 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
     // Used by: SEO  
     'iframes': (() => {   
       try { 
-        var nodes = document.querySelectorAll('iframe');
+        var nodes = [...document.querySelectorAll('iframe')];
 
         let result = {
             total: 0,
@@ -493,8 +506,8 @@ try { // whole process is placed in a try/catch so we can log uncaught errors
       try {    
         // https://support.google.com/webmasters/answer/79812?hl=en
         // https://developers.google.com/search/reference/robots_meta_tag
-        var validNodes = document.querySelectorAll('span[data-nosnippet], div[data-nosnippet], section[data-nosnippet]');
-        var allNodes = document.querySelectorAll('[data-nosnippet]');
+        var validNodes = [...document.querySelectorAll('span[data-nosnippet], div[data-nosnippet], section[data-nosnippet]')];
+        var allNodes = [...document.querySelectorAll('[data-nosnippet]')];
         return { valid: validNodes.length, wrong_tag_type: allNodes.length - validNodes.length};
       }
       catch(e) {
